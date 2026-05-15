@@ -518,6 +518,16 @@ a:hover { color: #2a708d; text-decoration: underline; }
     transition: all 0.2s ease-in;
 }
 .contact-form .form-submit:hover { background-color: var(--blue); }
+.contact-form .form-status {
+    width: 100%;
+    margin-top: 20px;
+    text-align: center;
+    font-weight: 700;
+    min-height: 1.5em;
+}
+.contact-form .form-status.sending { color: #888; }
+.contact-form .form-status.success { color: var(--light-blue); }
+.contact-form .form-status.error { color: #c0392b; }
 
 @media (min-width: 768px) {
     .contact-form label:not(.full) { width: 48%; }

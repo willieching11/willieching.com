@@ -39,4 +39,39 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+
+    var contactForm = document.querySelector('.contact-form');
+    var formStatus = contactForm && contactForm.querySelector('.form-status');
+
+    if (contactForm && formStatus) {
+        contactForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            formStatus.className = 'form-status sending';
+            formStatus.textContent = 'Sending...';
+
+            fetch(contactForm.action, {
+                method: 'POST',
+                body: new FormData(contactForm),
+                headers: { 'Accept': 'application/json' }
+            }).then(function (response) {
+                if (response.ok) {
+                    contactForm.reset();
+                    formStatus.className = 'form-status success';
+                    formStatus.textContent = "Thanks! Your message has been sent. I'll get back to you soon.";
+                    return;
+                }
+                return response.json().then(function (body) {
+                    formStatus.className = 'form-status error';
+                    if (body && body.errors && body.errors.length) {
+                        formStatus.textContent = body.errors.map(function (err) { return err.message; }).join('. ');
+                    } else {
+                        formStatus.textContent = 'Something went wrong. Please try again.';
+                    }
+                });
+            }).catch(function () {
+                formStatus.className = 'form-status error';
+                formStatus.textContent = 'Network error. Please check your connection and try again.';
+            });
+        });
+    }
 });
